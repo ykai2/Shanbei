@@ -1,0 +1,5 @@
+include ':xListView'
+include ':gestureimageview'
+include ':imageloadlibrary'
+include ':viewPagerlibrary'
+include ':Shanbei'
