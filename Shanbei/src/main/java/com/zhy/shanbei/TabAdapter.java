@@ -8,7 +8,7 @@ public class TabAdapter extends FragmentPagerAdapter
 {
 
 
-public static final String[] TITLES = new String[] { "U1", "U2", "U3", "U4", "U5", "U6" };
+public static final String[] TITLES = new String[] { "unit 1","unit 2","unit 3" ,"unit 4"};
 	public TabAdapter(FragmentManager fm)
 	{
 		super(fm);

@@ -19,7 +19,7 @@
     
      <style name="MyTheme" parent="AppBaseTheme">
         <item name="vpiTabPageIndicatorStyle">@style/MyWidget.TabPageIndicator</item>
-        <item name="android:windowBackground">@drawable/init_pic2</item>
+        <item name="android:windowBackground">@drawable/init_pic4</item>
         <item name="android:windowNoTitle">true</item>  
         <item name="android:animationDuration">5000</item>
         <item name="android:windowContentOverlay">@null</item>  
