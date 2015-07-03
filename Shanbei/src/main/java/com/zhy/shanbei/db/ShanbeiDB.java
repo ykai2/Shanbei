@@ -28,7 +28,7 @@ public class ShanbeiDB {
     /**
      * 将构造方法私有化
      */
-    private ShanbeiDB(Context context){
+    public ShanbeiDB(Context context){
         sqlHelper dbHelper=new sqlHelper(context,DB_NAME,null,VERSION);
         db=dbHelper.getWritableDatabase();
     }
@@ -44,7 +44,7 @@ public class ShanbeiDB {
     /**
      * 将 text 实例储存到数据库 
      */
-    public void saveText(textItem item){
+    public void saveText(textItem item){  //add
         if(item!=null){
             ContentValues contentValues=new ContentValues();
             contentValues.put("text_title",item.getTitle());
@@ -57,7 +57,7 @@ public class ShanbeiDB {
     /**
      * 从数据库获取所有 items
      */
-    public List<textItem> loadText(){
+    public List<textItem> loadText(){ //list
         List<textItem>list=new ArrayList<textItem>();
         Cursor cursor=db.query("MyText",null,null,null,null,null,null);
         if(cursor.moveToNext()){
@@ -73,4 +73,13 @@ public class ShanbeiDB {
         }
         return list;
     }
+
+    /**
+     * 删除
+     */
+    public void deleteALL(int newsTypt)//删除某一单元所有课文
+    {
+
+    }
+
 }

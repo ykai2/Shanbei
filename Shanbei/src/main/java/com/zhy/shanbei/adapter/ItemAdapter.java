@@ -3,7 +3,12 @@ package com.zhy.shanbei.adapter;
 import com.zhy.shanbei.R;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.format.DateUtils;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,8 +85,13 @@ public class ItemAdapter extends BaseAdapter{
         }
         textItem item=mdatas.get(position);
         holder.mTitle.setText(item.getTitle());
-        holder.mContent.setText(item.getContent());
-        holder.mDate.setText(item.getId());
+        String str =item.getContent();
+    //   SpannableStringBuilder style=new SpannableStringBuilder(str);
+      //  style.setSpan(new BackgroundColorSpan(Color.RED),3,5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+      //  style.setSpan(new ForegroundColorSpan(Color.RED),3,5, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+
+        holder.mContent.setText(str);
+        holder.mDate.setText("lesson "+item.getId());
        //翻页
        /*
        if(){

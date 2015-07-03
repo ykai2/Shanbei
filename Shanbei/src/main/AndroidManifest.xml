@@ -3,7 +3,7 @@
     package="com.zhy.shanbei"
     android:versionCode="1"
     android:versionName="1.0" >
-
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-sdk
         android:minSdkVersion="13"
         android:targetSdkVersion="17" />
@@ -24,6 +24,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.TxtContentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            />
     </application>
 
 </manifest>
