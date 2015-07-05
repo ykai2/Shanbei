@@ -1,6 +1,7 @@
 package com.zhy.shanbei.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -9,6 +10,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
@@ -35,18 +37,20 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore{
      * 该课文的唯一 id
      */
     private int txtId;
+    private int lel;  //高亮单词等级
     private textItemBll itemBll;
     private List<Txts>mDatas;
     ShanbeiDB shanbeiDB;
     private ProgressBar progressBar;
     private TxtContentAdapter contentAdapter;
-
+    private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_content);
         itemBll=new textItemBll();
-
+        lel=3; //默认为3
+        context=this.getApplicationContext();
         Bundle extras =getIntent().getExtras();
         txtId=extras.getInt("url");// 当前文章ID
         contentAdapter=        new TxtContentAdapter(this);
@@ -84,7 +88,11 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore{
             try {
                 //根据Id传入课文
                 // mDatas = mNewsItemBiz.getNews(url).getNewses();
-                mDatas = itemBll.getOneText(shanbeiDB,txtId);// .getTextItem(1);
+
+             //   mDatas = itemBll.getOneText(shanbeiDB,txtId);// .getTextItem(1);
+
+                mDatas = itemBll.getOneText_level(context ,shanbeiDB,txtId,lel);// .getTextItem(1);
+                Log.e("aaa",txtId+"xxx");
             }catch (Exception e)
             {
 
@@ -96,6 +104,44 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore{
         protected void onPostExecute(Void aVoid) {
             if(mDatas==null)
                 return;
+//            contentAdapter
+            contentAdapter.addList(mDatas);
+            contentAdapter.notifyDataSetChanged();
+            progressBar.setVisibility(View.GONE);
+        }
+    }
+
+    class LoadDataTask2 extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                //根据Id传入课文
+                // mDatas = mNewsItemBiz.getNews(url).getNewses();
+                if(lel+1<=5)
+               {
+                  lel+=1;
+                }
+                else {
+                  lel=0;
+                }
+
+
+                mDatas = itemBll.getOneText_level(context,shanbeiDB,txtId,lel);// .getTextItem(1);
+
+                Log.e("aaa",txtId+"xxx");
+            }catch (Exception e)
+            {
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if(mDatas==null)
+                return;
+//            contentAdapter
             contentAdapter.addList(mDatas);
             contentAdapter.notifyDataSetChanged();
             progressBar.setVisibility(View.GONE);
@@ -104,5 +150,13 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore{
 
     public void back(View view){
         finish();
+    }
+
+    // 切换等级
+    public void back2(View view){
+
+        progressBar.setVisibility(View.VISIBLE);
+        new LoadDataTask2().execute();
+//        mDatas = itemBll.getOneText(shanbeiDB,2);// .getTextItem(1);
     }
 }

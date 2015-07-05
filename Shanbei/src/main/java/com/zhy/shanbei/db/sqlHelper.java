@@ -32,6 +32,11 @@ public class sqlHelper extends SQLiteOpenHelper{
          " lesson_id integer," +
          " unit_id integer" +
          " )";
+    public static  final String Create_TD_L="create table MyWDL (" +
+            " id integer primary key autoincrement," +
+            " wds text,"+
+            " lel integer"+
+            " )";
 
  public sqlHelper(Context context,String name,CursorFactory factory,int version){
   super(context,name,factory,version);
@@ -40,6 +45,7 @@ public class sqlHelper extends SQLiteOpenHelper{
  @Override
  public void onCreate(SQLiteDatabase db) {
   db.execSQL(Create_TEXT); // 创建text表
+     db.execSQL(Create_TD_L); // 创建text表
  }
 
  @Override

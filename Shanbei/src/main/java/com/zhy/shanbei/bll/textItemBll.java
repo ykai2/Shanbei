@@ -2,6 +2,10 @@ package com.zhy.shanbei.bll;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 
 import com.zhy.shanbei.MainActivity;
@@ -16,9 +20,15 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.zhy.shanbei.R;
 import com.zhy.shanbei.db.ShanbeiDB;
 import com.zhy.shanbei.model.TXT;
+import com.zhy.shanbei.bll.WordBll;
 import com.zhy.shanbei.model.textItem;
 import com.zhy.shanbei.model.wrs_lvl;
 
@@ -217,4 +227,104 @@ public class textItemBll {
 
        // return items;
     }
+
+    public List<Txts> getOneText_level(Context context,ShanbeiDB shanbeiDB,int id,int lel)
+    {
+
+        List<Txts> txt=new ArrayList<Txts>();
+
+        Txts t=new Txts();
+        t.setContent(shanbeiDB.loadOneText(id).getContent());
+        /**
+         * 传入 int（lel） String(一篇文章)   List(一个词典)
+         * 返回 一个 Integer list
+         */
+        WordBll wordBll=new WordBll();
+
+                //{
+            List<Integer> LI = new ArrayList<Integer>();
+        List<wrs_lvl> listDic=wordBll.queryWDS(context,shanbeiDB );
+
+            LI=T_2_W(shanbeiDB.loadOneText(id).getContent(),listDic,lel);
+
+
+        //}
+        t.setIdOfHigh(LI);
+
+
+
+
+        // items.add(shanbeiDB.loadOneText(id));
+        t.setType(2);
+        txt.add(t);
+        return txt;
+
+
+
+
+
+
+        // return items;
+    }
+
+
+    public static List<Integer> T_2_W(String string ,List<wrs_lvl> listDic,int level)
+    {
+        List<Integer> list=new ArrayList<Integer>();
+
+        Pattern expression = Pattern.compile("[a-zA-Z]+");// 定义正则表达式匹配单词
+        Map<String, Integer> map = new TreeMap<String, Integer>();  //新生成 Map
+        Map<String,Integer> mapDic=new TreeMap<String, Integer>();
+        for(int i=0;i<listDic.size();i++)
+        {
+            /**
+             * 把list 装入map
+             * key：value ||   word：level
+             */
+            mapDic.put(listDic.get(i).getWd(), listDic.get(i).getLevel());
+        }
+
+
+
+
+        Matcher matcher = expression.matcher(string);//
+
+
+        String word = "";
+        int times = 0;
+        while (matcher.find()) {// 是否匹配单词
+            word = matcher.group();// 得到一个单词-树映射的键
+            if(mapDic.containsKey(word)&&mapDic.get(word)<=level)  // 该单词在在词典中,且高于
+            {
+                if (map.containsKey(word)) {// 如果包含该键，单词出现过
+                    times = map.get(word);// 得到单词出现的次数
+                    map.put(word, times + 1);//记录次数用于查找位置
+
+                    list.add(findSubStringAtInt(string, word, times + 1));
+                    list.add(findSubStringAtInt(string, word, times + 1) + word.length());
+                    //           System.out.println(times+"]"+word + ":" + findSubStringAtInt(string, word, times + 1)+"||"+(findSubStringAtInt(string, word, times + 1)-1+word.length()));
+                } else {
+                    map.put(word, 1);// 否则单词第一次出现，添加到映射中
+                    //     System.out.println(times+"]"+word + ":" + findSubStringAtInt(string, word, times + 1)+"||"+(findSubStringAtInt(string, word, times + 1)-1+word.length()));
+                    list.add(findSubStringAtInt(string, word, times + 1));
+                    list.add( findSubStringAtInt(string, word, times + 1)+word.length()  );
+                }
+            }
+        }
+        return list;
+    }
+
+    public static int findSubStringAtInt(String string,String substring,int times)
+    {
+        int id=1;
+        int tms=0;
+        while (tms<times &&  string.indexOf(substring,id)>=0) {
+            id = string.indexOf(substring, id) + substring.length();
+            tms++;
+        }
+        return id-substring.length();
+
+    }
+
+
 }

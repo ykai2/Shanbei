@@ -6,6 +6,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class TxtContentAdapter extends BaseAdapter {
         //options
     }
     public void addList(List<Txts>datas){
+        mDatas.clear();
         mDatas.addAll(datas);
     }
 
@@ -113,15 +115,24 @@ public class TxtContentAdapter extends BaseAdapter {
                     holder.textView.setText(txts.getTitle());
                     break;
                 case TxtsType.CONTENT:
+                {
+                    /**
+                     *
+                     */
 
-                       String str=                    txts.getContent();
-                   //    SpannableStringBuilder style=new SpannableStringBuilder(str);
 
-                   // style.setSpan(new ForegroundColorSpan(Color.RED),2,8, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-                   // style.setSpan(new ForegroundColorSpan(Color.RED),88,200, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+                    String str = txts.getContent();
+                    SpannableStringBuilder style = new SpannableStringBuilder(str);
 
-                    holder.textView.setText(str);
-                    break;
+                    List<Integer> list=txts.getIdOfHigh();
+
+                    for(int i=0;i<list.size();i+=2) {
+                        // style.setSpan(new ForegroundColorSpan(Color.RED),2,8, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+                        style.setSpan(new ForegroundColorSpan(Color.RED), txts.getIdOfHigh().get(i), txts.getIdOfHigh().get(i+1), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+                    }
+                    holder.textView.setText(style);
+                }
+                break;
                 default:
                     break;
             }
@@ -129,7 +140,9 @@ public class TxtContentAdapter extends BaseAdapter {
         return convertView;
 
     }
-    private final class ViewHolder{
+    private final class ViewHolder {
         TextView textView;
+
+
     }
 }

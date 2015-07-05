@@ -28,6 +28,7 @@ public class WordBll {
 
         List<wrs_lvl>L= shanbeiDB.loadWDS(); //getWDSList(inputStream);
         int counter=0;
+
         if(L.size()>0)
         {  Log.e("aaa", "从数据库中读取" + L.size());
 

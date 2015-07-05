@@ -1,5 +1,7 @@
 package com.zhy.shanbei.bean;
 
+import java.util.List;
+
 /**
  * Created by ykai on 2015/7/3.
  */
@@ -21,12 +23,24 @@ public class Txts {
      * 类型
      */
     private int type;
+    //   List<Txts> txt=new ArrayList<Txts>();
+    private List<Integer>  idOfHigh; // 储存高亮单词下表，list中个数为偶数个，每两个为一个单词的开始和结束
+
+    public List<Integer> getIdOfHigh() {
+        return  idOfHigh;
+    }
+
+    public void setIdOfHigh(List<Integer> idOfHigh) {
+        this.idOfHigh = idOfHigh;
+    }
+
     public String getTitle(){
         return title;
     }
     public void setTitle(String title){
         this.title=title;
     }
+
 
     public String getContent(){
         return content;
