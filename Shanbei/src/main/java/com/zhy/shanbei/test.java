@@ -11,21 +11,6 @@ import java.util.List;
 public class test {
     public static void main(String[] args) {
 
-        textItemBll itemBll=new textItemBll();
-        int unitid=1;
-try {
-    List<textItem> items = itemBll.getTextItem(unitid);
-    for (textItem item : items) {
-        System.out.println(item.getTitle()+item.getContent());
-    }
-}
-catch (Exception e)
-{
-    e.printStackTrace();
-
-}
-
-
 
 
 //        System.out.println("频频袅袅十三余，豆蔻梢头二月初");

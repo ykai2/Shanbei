@@ -115,12 +115,12 @@ public class TxtContentAdapter extends BaseAdapter {
                 case TxtsType.CONTENT:
 
                        String str=                    txts.getContent();
-                       SpannableStringBuilder style=new SpannableStringBuilder(str);
+                   //    SpannableStringBuilder style=new SpannableStringBuilder(str);
 
-                    style.setSpan(new ForegroundColorSpan(Color.RED),2,8, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-                    style.setSpan(new ForegroundColorSpan(Color.RED),88,200, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+                   // style.setSpan(new ForegroundColorSpan(Color.RED),2,8, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+                   // style.setSpan(new ForegroundColorSpan(Color.RED),88,200, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
 
-                    holder.textView.setText(style);
+                    holder.textView.setText(str);
                     break;
                 default:
                     break;

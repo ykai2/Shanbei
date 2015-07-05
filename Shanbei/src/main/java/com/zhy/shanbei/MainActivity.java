@@ -2,10 +2,13 @@ package com.zhy.shanbei;
 
 import com.viewpagerindicator.TabPageIndicator;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+
+import java.io.InputStream;
 
 public class MainActivity extends FragmentActivity
 {
@@ -25,10 +28,11 @@ public class MainActivity extends FragmentActivity
 		mAdapter = new TabAdapter(getSupportFragmentManager());
 		mViewPager.setAdapter(mAdapter);
 		mIndicator.setViewPager(mViewPager, 0);
-		
-		
+
+
 		
 	}
+
 	
 	
 

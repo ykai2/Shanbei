@@ -74,7 +74,7 @@ public class ItemAdapter extends BaseAdapter{
             convertView=layoutInflater.inflate(R.layout.news_item_yidong,null) ;
            // holder=new ViewHolder();
 
-            holder.mContent=(TextView)convertView.findViewById(R.id.id_content);
+      //      holder.mContent=(TextView)convertView.findViewById(R.id.id_content);
             holder.mTitle=(TextView)convertView.findViewById(R.id.id_title);
             holder.mDate=(TextView)convertView.findViewById(R.id.id_date);
           //  holder.mImg=(TextView)convertView.findViewById(R.id.id_newsImg);
@@ -85,12 +85,12 @@ public class ItemAdapter extends BaseAdapter{
         }
         textItem item=mdatas.get(position);
         holder.mTitle.setText(item.getTitle());
-        String str =item.getContent();
+ //       String str =item.getContent();
     //   SpannableStringBuilder style=new SpannableStringBuilder(str);
       //  style.setSpan(new BackgroundColorSpan(Color.RED),3,5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
       //  style.setSpan(new ForegroundColorSpan(Color.RED),3,5, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
 
-        holder.mContent.setText(str);
+     //   holder.mContent.setText("How does the writer like to treat young people?");
         holder.mDate.setText("lesson "+item.getId());
        //翻页
        /*
@@ -105,7 +105,7 @@ public class ItemAdapter extends BaseAdapter{
 
     private final class ViewHolder{
         TextView mTitle;
-        TextView mContent;
+   //     TextView mContent;
    //     ImageView mImg;
         TextView mDate;
     }

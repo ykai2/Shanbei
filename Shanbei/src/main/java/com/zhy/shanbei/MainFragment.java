@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,7 @@ public class MainFragment extends Fragment implements IXListViewRefreshListener,
 
 	public MainFragment(int newsType)
 	{
+
 		this.newsType = newsType;
 		//logger
 		itemBll=new textItemBll();
@@ -66,8 +68,13 @@ public class MainFragment extends Fragment implements IXListViewRefreshListener,
 	public void onActivityCreated(Bundle savedInstanceState)
 	{
 		super.onActivityCreated(savedInstanceState);
-		mDatas =itemBll.getTextItem(1);
+		/**
+		 * 第一个列表的数据
+		 */
 		shanbeiDB=new ShanbeiDB(getActivity());
+
+		mDatas =itemBll.queryTXTS(this.getActivity(),shanbeiDB)   ;//.getTextItem(1);
+			Log.e("aaa","mainfragment");
 		itemAdapter=new ItemAdapter(getActivity(),mDatas);
 		/**
 		 * 初始化
@@ -122,7 +129,7 @@ public class MainFragment extends Fragment implements IXListViewRefreshListener,
 		new LoadDataTask().execute(LOAD_MORE);
 
 		try{
-			List<textItem>items=itemBll.getTextItem(newsType);
+			List<textItem>items=itemBll.queryTXTS(this.getActivity(),shanbeiDB);//    getTextItem(newsType);
 			mDatas=items;
 		}catch (Exception e){
 			e.printStackTrace();
@@ -198,6 +205,7 @@ public class MainFragment extends Fragment implements IXListViewRefreshListener,
 //			else{
 		//从数据库中加载
 		// 多加载一页
+		Log.e("aaa","loadMoreData");
 		currentPage +=1;    //页码 + 1
 			List<textItem>items=shanbeiDB.loadText();//newsType,currentPage); //传入单元号和页码
 			itemAdapter.addAll(items);

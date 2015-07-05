@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.zhy.shanbei.model.textItem;
-
+import com.zhy.shanbei.model.wrs_lvl;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +54,16 @@ public class ShanbeiDB {
             db.insert("MyText",null,contentValues);
         }
     }
+
+    public void saveTextAll(List<textItem> items) {  //add
+        if (items != null) {
+            for (textItem t : items) {
+                saveText(t);
+            }
+        }
+    }
+
+
     /**
      * 从数据库获取所有 items
      */
@@ -65,7 +75,7 @@ public class ShanbeiDB {
                 textItem item=new textItem();
                 item.setId(cursor.getInt(cursor.getColumnIndex("id")));
                 item.setContent(cursor.getString(cursor.getColumnIndex("text_content")));
-                item.setTitle(cursor.getString(cursor.getColumnIndex("text_content")));
+                item.setTitle(cursor.getString(cursor.getColumnIndex("text_title")));
                 item.setUnitId(cursor.getInt(cursor.getColumnIndex("unit_id")));
                 item.setLessonId(cursor.getInt(cursor.getColumnIndex("lesson_id")));
                 list.add(item);
@@ -73,6 +83,66 @@ public class ShanbeiDB {
         }
         return list;
     }
+
+    public textItem loadOneText(int id){
+        //list
+        //  List<textItem> list=new ArrayList<textItem>();
+        textItem item=new textItem();
+        String selection = "id=?";
+        String[] selectionArgs = new String[]{id+""};
+        Cursor cursor=db.query("MyText",null,selection,selectionArgs,null,null,null,null);
+        if(cursor.moveToNext()){
+            //        textItem item=new textItem();
+            item.setId(cursor.getInt(cursor.getColumnIndex("id")));
+            item.setContent(cursor.getString(cursor.getColumnIndex("text_content")));
+            item.setTitle(cursor.getString(cursor.getColumnIndex("text_title")));
+            item.setUnitId(cursor.getInt(cursor.getColumnIndex("unit_id")));
+            item.setLessonId(cursor.getInt(cursor.getColumnIndex("lesson_id")));
+
+        }
+        return item;
+        //  return list;
+    }
+
+
+    /**
+     *
+     * @return
+     */
+    public List<wrs_lvl> loadWDS(){ //list
+
+        List<wrs_lvl> list=new ArrayList<wrs_lvl>();
+
+
+        Cursor cursor=db.query("MyWDL",null,null,null,null,null,null);
+
+        while (cursor.moveToNext()){
+
+            wrs_lvl item=new wrs_lvl();
+            item.setLevel(cursor.getInt(cursor.getColumnIndex("lel")));
+            item.setWd(cursor.getString(cursor.getColumnIndex("wds")));
+            list.add(item);
+
+        }
+
+        return list;
+    }
+
+
+    /**
+     *
+     */
+    public void saveWDAll(List<wrs_lvl> wds){  //add
+        if(wds!=null){
+            for(wrs_lvl w:wds) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("wds", w.getWd());
+                contentValues.put("lel", w.getLevel());
+                db.insert("MyWDL", null, contentValues);
+            }
+        }
+    }
+
 
     /**
      * 删除
