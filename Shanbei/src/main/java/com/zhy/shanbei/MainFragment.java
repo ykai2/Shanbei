@@ -89,9 +89,11 @@ public class MainFragment extends Fragment implements IXListViewRefreshListener,
 		xListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				textItem item=mDatas.get(position-1);
+				textItem item=mDatas.get((position-1)%7);
 				Intent intent=new Intent(getActivity(),TxtContentActivity.class);
-				intent.putExtra("url",item.getId());
+				Log.e("aaa",item.getId()+"||url:"+(            (              (item.getId()-1)         %7)         +1)  );
+				intent.putExtra("url",(            (              (item.getId()-1)         %7)         +1)       );
+
 				startActivity(intent);
 			}
 		});

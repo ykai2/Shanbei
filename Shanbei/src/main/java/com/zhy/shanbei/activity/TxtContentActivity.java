@@ -19,23 +19,28 @@ import com.zhy.shanbei.adapter.TxtContentAdapter;
 import com.zhy.shanbei.bean.Txts;
 import com.zhy.shanbei.bll.textItemBll;
 import com.zhy.shanbei.db.ShanbeiDB;
+import com.zhy.shanbei.util.PopMenu;
 
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import me.maxwin.view.IXListViewLoadMore;
 import me.maxwin.view.XListView;
-
+import android.view.View.OnClickListener;
+//import com.zhy.shanbei.util.PopMenu.OnItemClickListener2;
 /**
  * Created by ykai on 2015/7/3.
  */
-public class TxtContentActivity extends Activity implements IXListViewLoadMore{
+public class TxtContentActivity extends Activity implements IXListViewLoadMore, OnClickListener, PopMenu.OnItemClickListener {
     private XListView xListView;
     /**
      * 该课文的唯一 id
      */
+    private View mview;
+    private PopMenu popMenu;
     private int txtId;
     private int lel;  //高亮单词等级
     private textItemBll itemBll;
@@ -53,11 +58,20 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore{
         context=this.getApplicationContext();
         Bundle extras =getIntent().getExtras();
         txtId=extras.getInt("url");// 当前文章ID
+        Log.e("aaa","url:"+txtId);
         contentAdapter=        new TxtContentAdapter(this);
         shanbeiDB=ShanbeiDB.getInstance(this);
         xListView=(XListView)findViewById(R.id.id_listview);
         progressBar=(ProgressBar)findViewById(R.id.id_newsContentPro);
-
+/**
+ * 添加下拉菜单
+ */
+        findViewById(R.id.btn_title_popmenu).setOnClickListener(this);
+        // 初始化弹出菜单
+        popMenu = new PopMenu(this);
+        popMenu.addItems(new String[]{"滤词：1","滤词：2","滤词：3","滤词：4","滤词：5","滤词：6" });
+        popMenu.setOnItemClickListener2(this);
+        mview=(View)findViewById(R.id.btn_title_popmenu);
         xListView.setAdapter(contentAdapter);
         xListView.disablePullRefreash();
         xListView.disablePullLoad();
@@ -77,6 +91,49 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore{
     }
 
     @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.btn_title_popmenu){
+            popMenu.showAsDropDown(v);
+        }
+    }
+
+    @Override
+    public void onItemClick(int index) {
+       // Toast.makeText(this, "item clicked " + index + "!", Toast.LENGTH_SHORT).show();
+        switch (index)
+        {
+            case 1:
+                lel=2;
+                C_lel1(mview);
+                break;
+            case 2:
+                lel=3;
+                C_lel1(mview);
+                break;
+            case 3:
+                lel=4;
+                C_lel1(mview);
+                break;
+            case 4:
+                lel=5;
+                C_lel1(mview);
+                break;
+            case 5:
+                lel=6;
+                C_lel1(mview);
+                break;
+            case 0:
+                lel=1;
+                C_lel1(mview);
+                break;
+            default:
+                break;
+
+
+
+        }
+    }
+    @Override
     public void onLoadMore() {
         //
     }
@@ -90,7 +147,7 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore{
                 // mDatas = mNewsItemBiz.getNews(url).getNewses();
 
              //   mDatas = itemBll.getOneText(shanbeiDB,txtId);// .getTextItem(1);
-
+                Log.e("aaa",""+lel);
                 mDatas = itemBll.getOneText_level(context ,shanbeiDB,txtId,lel);// .getTextItem(1);
                 Log.e("aaa",txtId+"xxx");
             }catch (Exception e)
@@ -118,14 +175,9 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore{
             try {
                 //根据Id传入课文
                 // mDatas = mNewsItemBiz.getNews(url).getNewses();
-                if(lel+1<=5)
-               {
-                  lel+=1;
-                }
-                else {
-                  lel=0;
-                }
+//                lel=params[0];
 
+                Log.e("aaa",""+lel);
 
                 mDatas = itemBll.getOneText_level(context,shanbeiDB,txtId,lel);// .getTextItem(1);
 
@@ -159,4 +211,12 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore{
         new LoadDataTask2().execute();
 //        mDatas = itemBll.getOneText(shanbeiDB,2);// .getTextItem(1);
     }
+    public void C_lel1(View view){
+
+        progressBar.setVisibility(View.VISIBLE);
+        Log.e("aaa","lel"+lel);
+        new LoadDataTask2().execute();
+//        mDatas = itemBll.getOneText(shanbeiDB,2);// .getTextItem(1);
+    }
+
 }
