@@ -6,11 +6,13 @@
     android:background="@color/wangyibg"
     android:clickable="true"
     >
+
     <RelativeLayout
         android:id="@+id/head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <include layout="@layout/new_content_head"/>
+        <include layout="@layout/head2" />
+        <!--include layout="@layout/new_content_head"/-->
         </RelativeLayout>
     <me.maxwin.view.XListView
         android:id="@+id/id_listview"
