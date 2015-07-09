@@ -102,7 +102,6 @@ public class ItemAdapter extends BaseAdapter{
     private final class ViewHolder{
         TextView mTitle;
         TextView mContent;
-   //     ImageView mImg;
         TextView mDate;
     }
 

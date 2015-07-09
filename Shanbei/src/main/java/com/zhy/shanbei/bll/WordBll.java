@@ -29,7 +29,7 @@ public class WordBll {
         int counter=0;
 
         if(L.size()>0)// 存在就什么也不做
-        {  Log.e("aaa", "存在什么也不做" + L.size());
+        {
 
             //  for(wrs_lvl ll:L) {
             //    textView.setText(textView.getText()+"\n"+(++counter)+"|"+ll.getLevel() + ":" + ll.getWd());
@@ -38,7 +38,7 @@ public class WordBll {
         }
         else  //数据库中没有则从文本中加载
         {
-            Log.e("aaa", "从文本中加载");
+
 
             //从文本中读
             InputStream inputStream = context.getResources().openRawResource(R.raw.a);
@@ -48,7 +48,7 @@ public class WordBll {
 
             //存到数据库中
             shanbeiDB.saveWDAll(L2);
-            Log.e("aaa", "存到数据库中"+L2.size());
+
   //          return L2;
         }
     }
@@ -68,7 +68,7 @@ public class WordBll {
         int counter=0;
 
         if(L.size()>0)
-        {  Log.e("aaa", "从数据库中读取" + L.size());
+        {
 
             //  for(wrs_lvl ll:L) {
             //    textView.setText(textView.getText()+"\n"+(++counter)+"|"+ll.getLevel() + ":" + ll.getWd());
@@ -77,7 +77,7 @@ public class WordBll {
         }
         else  //数据库中没有则从文本中加载
         {
-            Log.e("aaa", "从文本中加载");
+
 
             //从文本中读
             InputStream inputStream = context.getResources().openRawResource(R.raw.a);
@@ -87,7 +87,7 @@ public class WordBll {
 
             //存到数据库中
             shanbeiDB.saveWDAll(L2);
-            Log.e("aaa", "存到数据库中"+L2.size());
+
             return L2;
         }
     }

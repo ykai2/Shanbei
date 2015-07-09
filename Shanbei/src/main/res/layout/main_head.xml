@@ -33,7 +33,7 @@
         android:textSize="21sp"
     >
     </TextView>
-    <ImageView
+    <!--ImageView
         android:id="@+id/btn_title_popmenu"
         android:layout_width="wrap_content"
         android:layout_height="20sp"
@@ -41,7 +41,7 @@
 
         android:gravity="center"
         android:minWidth="70.0dip"
-        android:src="@drawable/popmenu_btn_icon" />
+        android:src="@drawable/popmenu_btn_icon" /-->
 
 
 </LinearLayout>

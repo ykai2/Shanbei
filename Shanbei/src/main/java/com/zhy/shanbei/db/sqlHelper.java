@@ -44,7 +44,7 @@ public class sqlHelper extends SQLiteOpenHelper{
 
  @Override
  public void onCreate(SQLiteDatabase db) {
-  db.execSQL(Create_TEXT); // 创建text表
+     db.execSQL(Create_TEXT); // 创建text表
      db.execSQL(Create_TD_L); // 创建text表
  }
 

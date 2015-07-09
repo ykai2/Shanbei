@@ -23,6 +23,7 @@ import com.zhy.shanbei.util.PopMenu;
 
 import com.manuelpeinado.quickreturnheader.QuickReturnHeaderHelper;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore, 
     private int txtId;
     private int lel;  //高亮单词等级
     private textItemBll itemBll;
+    private TextView textViewBack;
     private List<Txts>mDatas;
     ShanbeiDB shanbeiDB;
     private ProgressBar progressBar;
@@ -59,13 +61,15 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore, 
   //      View view = helper.createView();
     //    setContentView(view);
 
-        Log.e("aaaa","xxx"+this.toString());
+
         itemBll=new textItemBll();
         lel=3; //默认为3
         context=this.getApplicationContext();
         Bundle extras =getIntent().getExtras();
         txtId=extras.getInt("url");// 当前文章ID
-        Log.e("aaa","url:"+txtId);
+        textViewBack=(TextView)findViewById(R.id.headT);
+      //  textViewBack.setText("<");
+
         contentAdapter=        new TxtContentAdapter(this);
         shanbeiDB=ShanbeiDB.getInstance(this);
         xListView=(XListView)findViewById(R.id.id_listview);
@@ -154,9 +158,9 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore, 
                 // mDatas = mNewsItemBiz.getNews(url).getNewses();
 
              //   mDatas = itemBll.getOneText(shanbeiDB,txtId);// .getTextItem(1);
-                Log.e("aaa",""+lel);
+
                 mDatas = itemBll.getOneText_level(context ,shanbeiDB,txtId,lel);// .getTextItem(1);
-                Log.e("aaa",txtId+"xxx"+this.toString());
+
             }catch (Exception e)
             {
 
@@ -184,11 +188,11 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore, 
                 // mDatas = mNewsItemBiz.getNews(url).getNewses();
 //                lel=params[0];
 
-                Log.e("aaa",""+lel);
+
 
                 mDatas = itemBll.getOneText_level(context,shanbeiDB,txtId,lel);// .getTextItem(1);
 
-                Log.e("aaa",txtId+"xxx" +this.toString());
+
             }catch (Exception e)
             {
 
@@ -221,7 +225,7 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore, 
     public void C_lel1(View view){
 
         progressBar.setVisibility(View.VISIBLE);
-        Log.e("aaa","lel"+lel);
+
         new LoadDataTask2().execute();
 //        mDatas = itemBll.getOneText(shanbeiDB,2);// .getTextItem(1);
     }

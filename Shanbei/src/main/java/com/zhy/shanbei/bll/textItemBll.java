@@ -50,7 +50,7 @@ public class textItemBll {
         List<String >titlelist=new ArrayList<String>();
         int counter=0;
         if(L.size()>0)
-        {  Log.e("aaa", "从数据库中读取"+L.size());
+        {
 
             for(textItem ll:L) {
 //                textView.setText(textView.getText()+"\n"+(++counter)+"|"+ll.getTitle());
@@ -60,7 +60,7 @@ public class textItemBll {
         }
         else  //数据库中没有则从文本中加载
         {
-            Log.e("aaa", "从文本中加载");
+
 
             //从文本中读
            // Resources myResources = getResources();
@@ -88,18 +88,18 @@ public class textItemBll {
 
 
             shanbeiDB.saveTextAll (L);
-            Log.e("aaa", "存到数据库中"+L2.size());
+
             return titlelist;
         }
     }
 
 
-    public List<textItem> queryTXTS(Context context,ShanbeiDB shanbeiDB){
+    public List<textItem> queryTXTS(Context context,ShanbeiDB shanbeiDB,int type){
 
-        List<textItem>L= shanbeiDB.loadText(); //getWDSList(inputStream);
+        List<textItem>L= shanbeiDB.loadTextCate(type); //getWDSList(inputStream);
         int counter=0;
         if(L.size()>0)
-        {  Log.e("aaa", "从数据库中读取"+L.size());
+        {
 
             // for(textItem ll:L)
             {
@@ -109,7 +109,7 @@ public class textItemBll {
         }
         else  //数据库中没有则从文本中加载
         {
-            Log.e("aaa", "从文本中加载");
+
 
             //从文本中读
             InputStream inputStream =context.getResources().openRawResource(R.raw.aa);
@@ -134,7 +134,7 @@ public class textItemBll {
 
 
             shanbeiDB.saveTextAll (L);
-            Log.e("aaa", "存到数据库中"+L2.size());
+            L= shanbeiDB.loadTextCate(type);
             return L;
         }
     }
@@ -203,8 +203,6 @@ public class textItemBll {
 
             list.add(txt1);
         }
-
-        //    return sb.toString();
         return list;
     }
 
@@ -215,17 +213,9 @@ public class textItemBll {
         List<Txts> txt=new ArrayList<Txts>();
         Txts t=new Txts();
         t.setContent(shanbeiDB.loadOneText(id).getContent());
-       // items.add(shanbeiDB.loadOneText(id));
         t.setType(2);
         txt.add(t);
         return txt;
-
-
-
-
-
-
-       // return items;
     }
 
     public List<Txts> getOneText_level(Context context,ShanbeiDB shanbeiDB,int id,int lel)
@@ -235,38 +225,27 @@ public class textItemBll {
 
         Txts t=new Txts();
         t.setContent(shanbeiDB.loadOneText(id).getContent());
-        /**
-         * 传入 int（lel） String(一篇文章)   List(一个词典)
-         * 返回 一个 Integer list
-         */
-        WordBll wordBll=new WordBll();
 
-                //{
+        WordBll wordBll=new WordBll();
             List<Integer> LI = new ArrayList<Integer>();
-        List<wrs_lvl> listDic=wordBll.queryWDS(context,shanbeiDB );
+
+            List<wrs_lvl> listDic=wordBll.queryWDS(context,shanbeiDB );
 
             LI=T_2_W(shanbeiDB.loadOneText(id).getContent(),listDic,lel);
-
-
-        //}
         t.setIdOfHigh(LI);
-
-
-
-
-        // items.add(shanbeiDB.loadOneText(id));
-        t.setType(2);
+        t.setType(2);// 2表示全文
         txt.add(t);
         return txt;
 
-
-
-
-
-
-        // return items;
     }
 
+    /**
+     *
+     * @param string 表示一篇文章
+     * @param listDic 一个词典 list
+     * @param level 词典的等级
+     * @return  这篇文章中出现在词典中（等级小于等于给定等级）的单词下标。每两个是一组，一组表示一个单词
+     */
 
     public static List<Integer> T_2_W(String string ,List<wrs_lvl> listDic,int level)
     {
@@ -284,11 +263,7 @@ public class textItemBll {
             mapDic.put(listDic.get(i).getWd(), listDic.get(i).getLevel());
         }
 
-
-
-
         Matcher matcher = expression.matcher(string);//
-
 
         String word = "";
         int times = 0;
@@ -299,13 +274,11 @@ public class textItemBll {
                 if (map.containsKey(word)) {// 如果包含该键，单词出现过
                     times = map.get(word);// 得到单词出现的次数
                     map.put(word, times + 1);//记录次数用于查找位置
-
                     list.add(findSubStringAtInt(string, word, times + 1));
                     list.add(findSubStringAtInt(string, word, times + 1) + word.length());
-                    //           System.out.println(times+"]"+word + ":" + findSubStringAtInt(string, word, times + 1)+"||"+(findSubStringAtInt(string, word, times + 1)-1+word.length()));
+
                 } else {
                     map.put(word, 1);// 否则单词第一次出现，添加到映射中
-                    //     System.out.println(times+"]"+word + ":" + findSubStringAtInt(string, word, times + 1)+"||"+(findSubStringAtInt(string, word, times + 1)-1+word.length()));
                     list.add(findSubStringAtInt(string, word, times + 1));
                     list.add( findSubStringAtInt(string, word, times + 1)+word.length()  );
                 }
@@ -314,6 +287,13 @@ public class textItemBll {
         return list;
     }
 
+    /**
+     * 查找子串第 n 次出现的位置下标
+     * @param string
+     * @param substring
+     * @param times
+     * @return
+     */
     public static int findSubStringAtInt(String string,String substring,int times)
     {
         int id=1;
@@ -323,8 +303,6 @@ public class textItemBll {
             tms++;
         }
         return id-substring.length();
-
     }
-
 
 }

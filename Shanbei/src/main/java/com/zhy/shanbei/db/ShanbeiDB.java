@@ -84,15 +84,39 @@ public class ShanbeiDB {
         return list;
     }
 
+    /**
+     * 从数据库获取所有 items
+     */
+    public List<textItem> loadTextCate(int type){ //list
+        List<textItem>list=new ArrayList<textItem>();
+
+        String selection = "unit_id=?";
+        String[] selectionArgs = new String[]{type+""};
+
+        Cursor cursor=db.query("MyText",null,selection,selectionArgs,null,null,null,null);
+        if(cursor.moveToNext()){
+            do {
+                textItem item=new textItem();
+                item.setId(cursor.getInt(cursor.getColumnIndex("id")));
+                item.setContent(cursor.getString(cursor.getColumnIndex("text_content")));
+                item.setTitle(cursor.getString(cursor.getColumnIndex("text_title")));
+                item.setUnitId(cursor.getInt(cursor.getColumnIndex("unit_id")));
+                item.setLessonId(cursor.getInt(cursor.getColumnIndex("lesson_id")));
+                list.add(item);
+            }while (cursor.moveToNext());
+        }
+        return list;
+    }
+
+
+
     public textItem loadOneText(int id){
-        //list
-        //  List<textItem> list=new ArrayList<textItem>();
+
         textItem item=new textItem();
         String selection = "id=?";
         String[] selectionArgs = new String[]{id+""};
         Cursor cursor=db.query("MyText",null,selection,selectionArgs,null,null,null,null);
         if(cursor.moveToNext()){
-            //        textItem item=new textItem();
             item.setId(cursor.getInt(cursor.getColumnIndex("id")));
             item.setContent(cursor.getString(cursor.getColumnIndex("text_content")));
             item.setTitle(cursor.getString(cursor.getColumnIndex("text_title")));
@@ -101,7 +125,6 @@ public class ShanbeiDB {
 
         }
         return item;
-        //  return list;
     }
 
 

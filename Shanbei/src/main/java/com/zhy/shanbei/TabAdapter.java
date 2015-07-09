@@ -15,8 +15,7 @@ public static final String[] TITLES = new String[] { "unit 1","unit 2","unit 3" 
 	}
 
 	@Override
-	public Fragment getItem(int arg0)
-	{
+	public Fragment getItem(int arg0) {
 		MainFragment fragment = new MainFragment(arg0+1);
 		return fragment;
 	}

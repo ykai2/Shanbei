@@ -5,6 +5,17 @@
     android:layout_height="wrap_content"
     android:background="#44C9A3"
   >
+    <TextView
+        android:id="@+id/headT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="4dp"
+        android:textColor="@color/white"
+
+        android:textSize="21sp"
+        android:text=""
+        />
     <ImageView
         android:id="@+id/backBtn"
         android:layout_width="wrap_content"
