@@ -1,6 +1,7 @@
 package com.zhy.shanbei;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 import com.zhy.shanbei.activity.TxtContentActivity;
 import com.zhy.shanbei.adapter.ItemAdapter;
+import com.zhy.shanbei.bll.WordBll;
 import com.zhy.shanbei.bll.textItemBll;
 import com.zhy.shanbei.db.ShanbeiDB;
 import com.zhy.shanbei.model.textItem;
@@ -51,6 +53,7 @@ public class MainFragment extends Fragment implements IXListViewRefreshListener,
 	private int currentPage=1;//当前页码 一页六条
 	private textItemBll itemBll; //课文处理业务
 	private ShanbeiDB shanbeiDB;
+	private Context context;
 	private XListView xListView;// 扩展的ListView
 	private ItemAdapter itemAdapter; // 数据适配器
 	List<textItem> mDatas = new ArrayList<textItem>();
@@ -104,6 +107,7 @@ public class MainFragment extends Fragment implements IXListViewRefreshListener,
 			/**
 			 * 进来时刷新
 			 */
+		init_WD(xListView);
 			xListView.startRefresh();
 			isFirstIn=false;
 		}
@@ -219,6 +223,49 @@ public class MainFragment extends Fragment implements IXListViewRefreshListener,
 	}
 
 
+/**
+ * 第一次运行初始化单词列表
+ */
+
+public void init_WD(View view){
+
+//	progressBar.setVisibility(View.VISIBLE);
+	new LoadDataTask_init().execute();
+//        mDatas = itemBll.getOneText(shanbeiDB,2);// .getTextItem(1);
+}
+class LoadDataTask_init extends AsyncTask<Void,Void,Void>{
+
+	@Override
+	protected Void doInBackground(Void... params) {
+		try {
+			//根据Id传入课文
+			// mDatas = mNewsItemBiz.getNews(url).getNewses();
+//                lel=params[0];
+
+			Log.e("aaa","开始加载单词");
+			WordBll wordBll=new WordBll();
+			wordBll.initWDS(getActivity(),shanbeiDB);
+
+		//	mDatas = itemBll.getOneText_level(context,shanbeiDB,txtId,lel);// .getTextItem(1);
+
+			Log.e("aaa","单词加载完成");
+		}catch (Exception e)
+		{
+
+		}
+		return null;
+	}
+
+	@Override
+	protected void onPostExecute(Void aVoid) {
+//		if(mDatas==null)
+			return;
+//            contentAdapter
+//		contentAdapter.addList(mDatas);
+//		contentAdapter.notifyDataSetChanged();
+//		progressBar.setVisibility(View.GONE);
+	}
+}
 
 
 }
