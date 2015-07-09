@@ -61,7 +61,9 @@ public class MainFragment extends Fragment implements IXListViewRefreshListener,
 
 		this.newsType = newsType;
 		//logger
+
 		itemBll=new textItemBll();
+
 	}
 
 	@Override

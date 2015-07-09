@@ -21,6 +21,7 @@ import com.zhy.shanbei.bll.textItemBll;
 import com.zhy.shanbei.db.ShanbeiDB;
 import com.zhy.shanbei.util.PopMenu;
 
+import com.manuelpeinado.quickreturnheader.QuickReturnHeaderHelper;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
@@ -52,7 +53,13 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore, 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        setContentView(R.layout.news_content);
         setContentView(R.layout.news_content);
+//        QuickReturnHeaderHelper helper = new QuickReturnHeaderHelper(this, R.layout.c2, R.layout.head2);
+  //      View view = helper.createView();
+    //    setContentView(view);
+
+        Log.e("aaaa","xxx"+this.toString());
         itemBll=new textItemBll();
         lel=3; //默认为3
         context=this.getApplicationContext();
@@ -149,7 +156,7 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore, 
              //   mDatas = itemBll.getOneText(shanbeiDB,txtId);// .getTextItem(1);
                 Log.e("aaa",""+lel);
                 mDatas = itemBll.getOneText_level(context ,shanbeiDB,txtId,lel);// .getTextItem(1);
-                Log.e("aaa",txtId+"xxx");
+                Log.e("aaa",txtId+"xxx"+this.toString());
             }catch (Exception e)
             {
 
@@ -181,7 +188,7 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore, 
 
                 mDatas = itemBll.getOneText_level(context,shanbeiDB,txtId,lel);// .getTextItem(1);
 
-                Log.e("aaa",txtId+"xxx");
+                Log.e("aaa",txtId+"xxx" +this.toString());
             }catch (Exception e)
             {
 
