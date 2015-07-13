@@ -10,20 +10,18 @@ public class Txts {
         public static final int TITLE = 1;
         public static final int CONTENT=2;
     }
-
     /**
      * 标题
      */
     private String title;
     /**
-     * 摘要
+     * 内容
      */
     private String content;
     /**
      * 类型
      */
     private int type;
-    //   List<Txts> txt=new ArrayList<Txts>();
     private List<Integer>  idOfHigh; // 储存高亮单词下表，list中个数为偶数个，每两个为一个单词的开始和结束
 
     public List<Integer> getIdOfHigh() {
@@ -48,16 +46,12 @@ public class Txts {
     public void setContent(String content){
         this.content=content;
     }
+
     public int getType(){
         return type;
     }
     public void setType(int type){
         this.type=type;
     }
-
-
-
-
-
 
 }

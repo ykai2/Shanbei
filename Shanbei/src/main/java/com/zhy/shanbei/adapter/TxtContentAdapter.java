@@ -29,13 +29,8 @@ public class TxtContentAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<Txts> mDatas=new ArrayList<Txts>();
 
-    private ImageLoader imageLoader=ImageLoader.getInstance();
-    private DisplayImageOptions options;
-
     public TxtContentAdapter(Context context){
         inflater=LayoutInflater.from(context);
-        //imageLoader.init();
-        //options
     }
     public void addList(List<Txts>datas){
         mDatas.clear();
@@ -76,12 +71,7 @@ public class TxtContentAdapter extends BaseAdapter {
 
     @Override
     public boolean isEnabled(int position) {
-        //switch (mDatas.get(position).getType())
-        {
-//            case TxtsType.TITLE
             return false;
-
-        }
     }
 
     @Override
@@ -100,7 +90,6 @@ public class TxtContentAdapter extends BaseAdapter {
                     convertView=inflater.inflate(R.layout.news_content_item,null);
                     holder.textView=(TextView)convertView.findViewById(R.id.text);
                     break;
-
             }
             convertView.setTag(holder);
         }
@@ -109,26 +98,20 @@ public class TxtContentAdapter extends BaseAdapter {
         }
         if(null!=txts)
         {
-            switch (txts.getType())
+            switch (txts.getType()) // Type=1，显示title。Type=1，显示课文text
             {
                 case TxtsType.TITLE:
                     holder.textView.setText(txts.getTitle());
                     break;
                 case TxtsType.CONTENT:
                 {
-                    /**
-                     *
-                     */
-
-
                     String str = txts.getContent();
                     SpannableStringBuilder style = new SpannableStringBuilder(str);
 
-                    List<Integer> list=txts.getIdOfHigh();
+                    List<Integer> list=txts.getIdOfHigh();// list 里存放需高亮单词下标，每两个一组，为一个单词的开始和结束下标
 
                     for(int i=0;i<list.size();i+=2) {
-                        // style.setSpan(new ForegroundColorSpan(Color.RED),2,8, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-                        style.setSpan(new ForegroundColorSpan(Color.RED), txts.getIdOfHigh().get(i), txts.getIdOfHigh().get(i+1), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+                        style.setSpan(new ForegroundColorSpan(Color.argb(255,32,158,132)), txts.getIdOfHigh().get(i), txts.getIdOfHigh().get(i+1), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
                     }
                     holder.textView.setText(style);
                 }
@@ -141,8 +124,6 @@ public class TxtContentAdapter extends BaseAdapter {
 
     }
     private final class ViewHolder {
-        TextView textView;
-
-
+        TextView textView; //课文
     }
 }

@@ -11,7 +11,7 @@
         android:id="@+id/id_indicator"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#C1FFE4" >
+        android:background="#44c8a2" >
     </com.viewpagerindicator.TabPageIndicator>
 
     <android.support.v4.view.ViewPager

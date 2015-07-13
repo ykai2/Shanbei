@@ -2,31 +2,21 @@ package com.zhy.shanbei.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.BackgroundColorSpan;
-import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import com.zhy.shanbei.R;
 import com.zhy.shanbei.adapter.TxtContentAdapter;
 import com.zhy.shanbei.bean.Txts;
-import com.zhy.shanbei.bll.textItemBll;
+import com.zhy.shanbei.bll.TextBll;
 import com.zhy.shanbei.db.ShanbeiDB;
 import com.zhy.shanbei.util.PopMenu;
 
-import com.manuelpeinado.quickreturnheader.QuickReturnHeaderHelper;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import me.maxwin.view.IXListViewLoadMore;
@@ -45,30 +35,24 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore, 
     private PopMenu popMenu;
     private int txtId;
     private int lel;  //高亮单词等级
-    private textItemBll itemBll;
+    private TextBll textBll;
     private TextView textViewBack;
     private List<Txts>mDatas;
-    ShanbeiDB shanbeiDB;
+    private ShanbeiDB shanbeiDB;
     private ProgressBar progressBar;
     private TxtContentAdapter contentAdapter;
     private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.news_content);
         setContentView(R.layout.news_content);
-//        QuickReturnHeaderHelper helper = new QuickReturnHeaderHelper(this, R.layout.c2, R.layout.head2);
-  //      View view = helper.createView();
-    //    setContentView(view);
 
-
-        itemBll=new textItemBll();
+        textBll=new TextBll();
         lel=3; //默认为3
         context=this.getApplicationContext();
         Bundle extras =getIntent().getExtras();
-        txtId=extras.getInt("url");// 当前文章ID
+        txtId=extras.getInt("lessonId");// 当前文章ID
         textViewBack=(TextView)findViewById(R.id.headT);
-      //  textViewBack.setText("<");
 
         contentAdapter=        new TxtContentAdapter(this);
         shanbeiDB=ShanbeiDB.getInstance(this);
@@ -91,8 +75,6 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore, 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Txts txts=mDatas.get(position-1);
-                //String imageLink
-             //   Intent intent=new Intent(TxtContentActivity.this)
 
             }
         });
@@ -108,126 +90,82 @@ public class TxtContentActivity extends Activity implements IXListViewLoadMore, 
         }
     }
 
+    /**
+     * 点击下弹菜单子项方法
+     * @param index
+     */
     @Override
     public void onItemClick(int index) {
-       // Toast.makeText(this, "item clicked " + index + "!", Toast.LENGTH_SHORT).show();
         switch (index)
         {
+            case 0:
+                lel=1;  // 设置高亮单词等级
+                changeWordLevel(mview);
+                break;
             case 1:
                 lel=2;
-                C_lel1(mview);
+                changeWordLevel(mview);
                 break;
             case 2:
                 lel=3;
-                C_lel1(mview);
+                changeWordLevel(mview);
                 break;
             case 3:
                 lel=4;
-                C_lel1(mview);
+                changeWordLevel(mview);
                 break;
             case 4:
                 lel=5;
-                C_lel1(mview);
+                changeWordLevel(mview);
                 break;
             case 5:
                 lel=6;
-                C_lel1(mview);
-                break;
-            case 0:
-                lel=1;
-                C_lel1(mview);
+                changeWordLevel(mview);
                 break;
             default:
                 break;
-
-
-
         }
     }
     @Override
     public void onLoadMore() {
-        //
-    }
-
-    class LoadDataTask extends AsyncTask<Void,Void,Void>{
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                //根据Id传入课文
-                // mDatas = mNewsItemBiz.getNews(url).getNewses();
-
-             //   mDatas = itemBll.getOneText(shanbeiDB,txtId);// .getTextItem(1);
-
-                mDatas = itemBll.getOneText_level(context ,shanbeiDB,txtId,lel);// .getTextItem(1);
-
-            }catch (Exception e)
-            {
-
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            if(mDatas==null)
-                return;
-//            contentAdapter
-            contentAdapter.addList(mDatas);
-            contentAdapter.notifyDataSetChanged();
-            progressBar.setVisibility(View.GONE);
-        }
-    }
-
-    class LoadDataTask2 extends AsyncTask<Void,Void,Void>{
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                //根据Id传入课文
-                // mDatas = mNewsItemBiz.getNews(url).getNewses();
-//                lel=params[0];
-
-
-
-                mDatas = itemBll.getOneText_level(context,shanbeiDB,txtId,lel);// .getTextItem(1);
-
-
-            }catch (Exception e)
-            {
-
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            if(mDatas==null)
-                return;
-//            contentAdapter
-            contentAdapter.addList(mDatas);
-            contentAdapter.notifyDataSetChanged();
-            progressBar.setVisibility(View.GONE);
-        }
     }
 
     public void back(View view){
         finish();
     }
 
-    // 切换等级
-    public void back2(View view){
-
+    /**
+     *   根据当前 lel（需高亮单词等级）重新加载课文
+     * @param view
+     */
+    public void changeWordLevel(View view){
         progressBar.setVisibility(View.VISIBLE);
-        new LoadDataTask2().execute();
-//        mDatas = itemBll.getOneText(shanbeiDB,2);// .getTextItem(1);
+        new LoadDataTask().execute();
     }
-    public void C_lel1(View view){
 
-        progressBar.setVisibility(View.VISIBLE);
+    /**
+     * 异步加载课文
+     */
+    class LoadDataTask extends AsyncTask<Void,Void,Void>{
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                mDatas = textBll.getOneText(context,shanbeiDB,txtId,lel);
+            }catch (Exception e) {
 
-        new LoadDataTask2().execute();
-//        mDatas = itemBll.getOneText(shanbeiDB,2);// .getTextItem(1);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if(mDatas==null)
+                return;
+            contentAdapter.addList(mDatas);
+            contentAdapter.notifyDataSetChanged();
+            progressBar.setVisibility(View.GONE);
+        }
     }
+
 
 }

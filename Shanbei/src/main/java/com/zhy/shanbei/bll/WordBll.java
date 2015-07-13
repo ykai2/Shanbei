@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.zhy.shanbei.db.ShanbeiDB;
-import com.zhy.shanbei.model.wrs_lvl;
+import com.zhy.shanbei.model.Words;
 import com.zhy.shanbei.R;
 
 import java.io.BufferedReader;
@@ -22,89 +22,52 @@ public class WordBll {
     /**
      * 初始 单词表
      */
-    public void initWDS(Context context, ShanbeiDB shanbeiDB){
-
-
-        List<wrs_lvl>L= shanbeiDB.loadWDS(); //getWDSList(inputStream);
-        int counter=0;
-
+    public void initWords(Context context, ShanbeiDB shanbeiDB){
+        List<Words>L= shanbeiDB.loadWords(); //getWDSList(inputStream);
         if(L.size()>0)// 存在就什么也不做
         {
-
-            //  for(wrs_lvl ll:L) {
-            //    textView.setText(textView.getText()+"\n"+(++counter)+"|"+ll.getLevel() + ":" + ll.getWd());
-            // }
-          //  return L;
         }
-        else  //数据库中没有则从文本中加载
+        else  //否则从文本中加载
         {
-
-
             //从文本中读
             InputStream inputStream = context.getResources().openRawResource(R.raw.a);
-
-
-            List<wrs_lvl>L2= getWDSList(inputStream);
-
+            List<Words>L2= getWordList(inputStream);
             //存到数据库中
             shanbeiDB.saveWDAll(L2);
-
-  //          return L2;
         }
     }
-
-
-
-
 
     /**
      * 读取list（word） 先从数据库中读取，如果没有则从文本中读并存入数据库
      * @return List(word)
      */
-    public List<wrs_lvl> queryWDS(Context context, ShanbeiDB shanbeiDB){
-
-
-        List<wrs_lvl>L= shanbeiDB.loadWDS(); //getWDSList(inputStream);
-        int counter=0;
-
+    public List<Words> queryWords(Context context, ShanbeiDB shanbeiDB){
+        List<Words>L= shanbeiDB.loadWords();
         if(L.size()>0)
         {
-
-            //  for(wrs_lvl ll:L) {
-            //    textView.setText(textView.getText()+"\n"+(++counter)+"|"+ll.getLevel() + ":" + ll.getWd());
-            // }
             return L;
         }
         else  //数据库中没有则从文本中加载
         {
-
-
             //从文本中读
             InputStream inputStream = context.getResources().openRawResource(R.raw.a);
-
-
-            List<wrs_lvl>L2= getWDSList(inputStream);
-
+            List<Words>L2= getWordList(inputStream);
             //存到数据库中
             shanbeiDB.saveWDAll(L2);
-
             return L2;
         }
     }
-
 
     /**
      *   InputStream inputStream = getResources().openRawResource(R.raw.a);
      *    getWDSList(inputStream);
      * @param  inputStream
-     * @return  list(wrs_lvl)
+     * @return  list(Words)
      */
-    public static List<wrs_lvl> getWDSList(InputStream inputStream) {
-        List<wrs_lvl> list = new ArrayList<wrs_lvl>();
-        List<String>listWD=new ArrayList<String>();
-        List<Integer> listL=new ArrayList<Integer>();
-        wrs_lvl wrsLvl = new wrs_lvl();
-
+    public static List<Words> getWordList(InputStream inputStream) {
+        List<Words> list = new ArrayList<Words>();
+        List<String>listWord=new ArrayList<String>();   // 储存单词
+        List<Integer>listLevel=new ArrayList<Integer>();  // 储存单词等级
         InputStreamReader inputStreamReader = null;
         try {
             inputStreamReader = new InputStreamReader(inputStream, "gbk");
@@ -112,38 +75,25 @@ public class WordBll {
             e1.printStackTrace();
         }
         BufferedReader reader = new BufferedReader(inputStreamReader);
-        //    StringBuffer sb = new StringBuffer("");
         String line;
         try {
             while ((line = reader.readLine()) != null) {
-                /**
-                 *
-                 */
-                String int1 = line.substring(0, line.indexOf("\t"));//获得第一个数字
-                String int2 = line.substring(line.indexOf("\t") + 1, line.indexOf("\t") + 2);//第二个
-                int i2 = Integer.parseInt(int2);//转为数字
-                // Log.e("aaa", int1 + "  :  " + i2);
-                //      wrsLvl.setWd(int1);
-                //    wrsLvl.setLevel(i2);
-                //  list.add(wrsLvl);
-                listL.add(i2);
-                listWD.add(int1);
-                //               sb.append(line);
-                //             sb.append("\n");
+                String word = line.substring(0, line.indexOf("\t"));//获得第一个数字
+                String integer = line.substring(line.indexOf("\t") + 1, line.indexOf("\t") + 2);//第二个
+                int level = Integer.parseInt(integer);//转为数字
+                listLevel.add(level);
+                listWord.add(word);
             }
         } catch (IOException e) {
             e.printStackTrace();
-
         }
-        //    return sb.toString();
-        for(int i=0;i<listL.size()&&i<listWD.size();i++)
+        for(int i=0;i<listLevel.size()&&i<listWord.size();i++)
         {
-            wrs_lvl wL=new wrs_lvl();
-            wL.setLevel(listL.get(i));
-            wL.setWd(listWD.get(i));
+            Words wL=new Words();
+            wL.setLevel(listLevel.get(i));
+            wL.setWd(listWord.get(i));
             list.add(wL);
         }
         return list;
     }
-
 }
